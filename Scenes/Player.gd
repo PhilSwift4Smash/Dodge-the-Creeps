@@ -13,16 +13,15 @@ func _ready():
 	pass
 	screen_size = get_viewport_rect().size
 	position = Vector2()
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 	
 	var velcocity = Vector2()
 	if Input.is_action_pressed("ui_up"):
-		velcocity.y += 1
-	if Input.is_action_pressed("ui_down"):
 		velcocity.y -= 1
+	if Input.is_action_pressed("ui_down"):
+		velcocity.y += 1
 	if Input.is_action_pressed("ui_left"):
 		velcocity.x -= 1
 	if Input.is_action_pressed("ui_right"):
@@ -36,3 +35,13 @@ func _process(delta):
 	position += velcocity * delta
 	position.x = clamp(position.x, 0, screen_size.x)
 	position.y = clamp(position.y, 0, screen_size.y)
+	
+	if velcocity.x != 0:
+		$AnimatedSprite.animation = "right"
+		$AnimatedSprite.flip_v = false
+		# See the note below about boolean assignment
+		$AnimatedSprite.flip_h = velcocity.x < 0
+	elif velcocity.y != 0:
+		$AnimatedSprite.animation = "up"
+		$AnimatedSprite.flip_v = velcocity.y > 0
+	
